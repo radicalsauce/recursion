@@ -3,27 +3,42 @@
 
 // but you don't so you're going to write it from scratch:
 var stringifyJSON = function(obj) {
+  console.log("Object being fed:" + obj);
   if (obj === null) {
-    return "null";  
+    return "null"; 
+
+  } else if (typeof(obj) === 'function') {
+    return;
+
   } else if (typeof obj === "number") {
     return ""+obj+"";
+
   } else if (typeof obj === "string") {
     return '"'+obj+'"';
+
   } else if (typeof obj === "boolean") {
     return ""+obj+"";
+
   } else if (typeof obj === "undefined") {
-    return "undefined";
+    return;
+
   } else if (Array.isArray(obj)){
     var arrayResult = [];
     for (var i = 0; i < obj.length; i++){
       arrayResult.push(stringifyJSON(obj[i]));
     }
     return "["+arrayResult+"]"; 
+
   } else {
-    var objectResult = {};
+    var objectResult = [];
     for (var key in obj){
-      // this crap doesn't work yet
+      if (typeof obj[key] != "function" && typeof obj[key] != "undefined") {
+        objectResult.push(stringifyJSON(key));
+        objectResult.push(':');
+        objectResult.push(stringifyJSON(obj[key]));
+      }     
     }
+    objectResult = objectResult.toString().replace(/,\:,*/g, ':');
     return "{"+objectResult+"}"; 
   } 
 };
