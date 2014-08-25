@@ -5,5 +5,20 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className){
-  // your code here
+  var doc = document.body;	
+  var results = [];
+  
+  var getElem = function(elem) {
+    if (elem.classList && elem.classList.contains(className)) {
+      results.push(elem);
+    }
+
+    for (var i = 0; i < elem.childNodes.length; i++) {
+      getElem(elem.childNodes[i]);
+    };
+  };
+
+  getElem(doc);
+  return results;
+
 };
